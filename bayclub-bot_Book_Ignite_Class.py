@@ -1,11 +1,11 @@
-
+#!/usr/bin/python3
 
 #############################################################################################
 #############################################################################################
 #
 #   The MIT License (MIT)
 #   
-#   Copyright (c) 2021 http://odelay.io 
+#   Copyright (c) 2023 http://odelay.io 
 #   
 #   Permission is hereby granted, free of charge, to any person obtaining a copy
 #   of this software and associated documentation files (the "Software"), to deal
@@ -27,17 +27,13 @@
 #   
 #   Contact : <everett@odelay.io>
 #  
-#   Description : Build script for GNURadio with RFNoC
+#   Description : Bayclub Bot for booking Ignite Class.  See README.md for instructions.
 #
 #   Version History:
 #   
 #       Date        Description
 #     -----------   -----------------------------------------------------------------------
 #      07FEB2023     Original Creation
-#
-###########################################################################################
-#
-# Execute script to book Ignite Class, see README.md for instructions.
 #
 ###########################################################################################
 
@@ -81,7 +77,6 @@ else:
 #   Open Chrome and go to website
 # -----------------------------------------------------------
 browser = webdriver.Chrome()
-#browser.get(('https://bayclubconnect.com/home/member-dashboard'))
 browser.get(('https://bayclubconnect.com/classes'))
 
 wait = WebDriverWait(browser,10)
@@ -106,30 +101,6 @@ login_button.click()
 time.sleep(_DELAY)
 print("Logged into Bayclub...")
 
-#           # -----------------------------------------------------------
-#           #   Select Location
-#           # -----------------------------------------------------------
-#           plan_a_visit = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-navbar/nav/div/div/button")))
-#           plan_a_visit.click()
-#           time.sleep(_DELAY)
-#           
-#           
-#           el_segundo_location = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/modal-container/div/div/app-schedule-visit-desktop/div/div/app-schedule-visit-club/div/div[1]/div/div[2]/div/div[3]/div[1]/div/app-radio-select/div/div[2]/div/span[1]")))
-#           el_segundo_location.click()
-#           time.sleep(_DELAY)
-#           
-#           
-#           club_location_continue_button = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/modal-container/div/div/app-schedule-visit-desktop/div/div/app-schedule-visit-club/div/div[2]/div/div")))
-#           club_location_continue_button.click()
-#           time.sleep(_DELAY)
-#           
-#           
-#           # -----------------------------------------------------------
-#           #   Select Fitnes 
-#           # -----------------------------------------------------------
-#           fitness = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/modal-container/div/div/app-schedule-visit-desktop/div/div/app-schedule-visit-service/div/div/div/div[4]/div[2]/div/div")))
-#           fitness.click()
-#           time.sleep(_DELAY)
 
 # -----------------------------------------------------------
 #   Select Day to book (always 3 days from today)
