@@ -34,6 +34,8 @@
 #       Date        Description
 #     -----------   -----------------------------------------------------------------------
 #      07FEB2023     Original Creation
+#      08FEB2023     Added weekday check for M/W/F scheduling
+#      10FEB2023     Fixed day of week bug, and removed 800 time booking
 #
 ###########################################################################################
 
@@ -44,13 +46,18 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import datetime
 
-_USER_NAME      = 'your-user-name'
-_USER_PASS      = 'your-password'
+# -----------------------------------------------------------
+#   Parameters
+# -----------------------------------------------------------
+_USER_NAME      = 'your_user_name'
+_USER_PASS      = 'your_password'
 
 _DELAY          = 0.00
 _ENABLE_TIMER   = True
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
+
+_DEBUG_MODE     = False
 
 _CLASS_TIME     = _CLASS_TIME_HR*100+_CLASS_TIME_MIN
 
@@ -59,18 +66,22 @@ _CLASS_TIME     = _CLASS_TIME_HR*100+_CLASS_TIME_MIN
 #   Setting timer to sleep for exact seconds
 # -----------------------------------------------------------
 if(_ENABLE_TIMER):
-    t = datetime.datetime.today()
-    f = datetime.datetime(t.year,t.month,t.day,_CLASS_TIME_HR,_CLASS_TIME_MIN,3)  # 7am Class
-    print("Auto Booking with Delay...")
-    print("  Current Time         : " + str(t))
-    print("  Booking Time         : " + str(f))
-    s = (f-t).total_seconds()
-    print("  Seconds to Booking   : " + str(s))
-    
-    print("Sleeping for " + str(s) + "seconds...")
-    time.sleep(s)
+  t = datetime.datetime.today()
+  f = datetime.datetime(t.year,t.month,t.day,_CLASS_TIME_HR,_CLASS_TIME_MIN,3)  # 7am Class
+  day_of_week = f.weekday()  # 6:Sunday, 1:Tuesday, 4:Friday
+  print("Auto Booking with Delay...")
+  print("  Current Time         : " + str(t))
+  print("  Booking Time         : " + str(f))
+  s = (f-t).total_seconds()
+  print("  Seconds to Booking   : " + str(s))
+  
+  print("Sleeping for " + str(s) + "seconds...")
+  time.sleep(s)
 else:
-    print("Auto Booking Now...")
+  # Used for testing...
+  _DEBUG_MODE = True
+  day_of_week = 4  # 6:Sunday, 1:Tuesday, 4:Friday
+  print("Auto Booking Now...")
 
 
 # -----------------------------------------------------------
@@ -116,17 +127,36 @@ print("Selected Day...")
 # -----------------------------------------------------------
 # 7am Class
 if(_CLASS_TIME == 700):
+  # 1: Today is Tuesday, booking for Friday Class
+  if(day_of_week==1): 
+    print('Today is Tuesday, Booking Friday Ignite Class...')  
     book_ignite = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/app-classes-list/div/div[3]/app-classes-can-book-item/app-class-list-item/div/div[1]/div[5]/div")))
 
-# 8:30am Class
-if(_CLASS_TIME == 830):
-    book_ignite = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/app-classes-list/div/div[7]/app-classes-can-book-item/app-class-list-item/div/div[1]/div[5]/div")))
-book_ignite.click()
-time.sleep(_DELAY)
+  # 4: Today is Friday, booking for Monday Ignite Class
+  elif(day_of_week==4): 
+    print('Today is Friday, Booking Monday Ignite Class...')  
+    book_ignite = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/app-classes-list/div/div[4]/app-classes-can-book-item/app-class-list-item/div/div[1]/div[5]/div")))
 
-confirm = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]")))
-confirm.click()
-time.sleep(_DELAY)
+  # 6: Today is Sunday, booking for Wednesday Ignite Class
+  elif(day_of_week==6): 
+    print('Today is Sunday, Booking Wednesday Ignite Class...')  
+    book_ignite = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/app-classes-list/div/div[3]/app-classes-can-book-item/app-class-list-item/div/div[1]/div[5]/div")))
+  else:
+    print('ERROR: CRON Executed on a day that is NOT expected...')
+    book_ignite = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/app-classes-list/div/div[3]/app-classes-can-book-item/app-class-list-item/div/div[1]/div[5]/div")))
+
+
+if(_DEBUG_MODE):
+  print('INFO: Debug Mode')
+else:
+  # Confirm Booking
+  book_ignite.click()
+  time.sleep(_DELAY)
+  
+  confirm = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]")))
+  confirm.click()
+  time.sleep(_DELAY)
+
 
 # -----------------------------------------------------------
 #   Close Chrome

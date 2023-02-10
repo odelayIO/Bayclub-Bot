@@ -53,6 +53,18 @@ Then copy the following three lines into the crontab file:
 
 ```
 
+Please note the following for `crontab` to select days:
+
+| Day Of Week | CRONTAB Label |
+| ----------- | ------------- |
+| Monday      | 1             |
+| Tuesday     | 2             |
+| Wednesday   | 3             |
+| Thursday    | 4             |
+| Friday      | 5             |
+| Saturday    | 6             |
+| Sunday      | 7 (or 0)      |
+
 
 
 ## Configure `bayclub-bot_Book_Ignite_Class.py` Bot
@@ -63,4 +75,24 @@ The following parameters will need to be udpated with the user name and password
 _USER_NAME      = 'your-user-name'
 _USER_PASS      = 'your-password'
 ```
+
+Please note the `datetime.weekday()` is used to determine the day of the week.  The label is the following:
+
+| Day Of Week | datetime.weekday() Returns |
+| ----------- | -------------------------- |
+| Monday      | 0                          |
+| Tuesday     | 1                          |
+| Wednesday   | 2                          |
+| Thursday    | 3                          |
+| Friday      | 4                          |
+| Saturday    | 5                          |
+| Sunday      | 6                          |
+
+The bot needs to book on the following days:
+
+| CRONTAB Execute Day:        | Booking for Class that Occurs on:   |
+| --------------------------- | ----------------------------------- |
+| Sunday (crontab code: `7`)  | Wednesday Class (`day_of_week = 6`) |
+| Tuesday (crontab code: `2`) | Friday Class (`day_of_week = 1`)    |
+| Friday (crontab code: `5`)  | Monday Class (`day_of_week = 4`)    |
 
