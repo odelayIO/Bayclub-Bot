@@ -2,6 +2,18 @@
 
 I'm not proud of using my engineering skills to cheat the system, but I'm over 40 years old and need to workout to stay healthy.
 
+This Python script will automatically register for the Ignite class at 7am for Monday, Wednesday, and Friday.  The Bayclub mobile app is just a website, so you can access the same features from a desktop computer.
+
+
+
+### Assumptions
+
+This is a list of assumptions:
+
+- The default location is El Segundo, and you profile has El Segundo as the default location when booking a class.
+- Only support Linux (e.g. Ubuntu) with `cron` for scheduling the time to book the Ignite class.
+- Only supports Chrome webbrowser driver.
+
 
 
 ## System Configuration
