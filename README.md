@@ -32,7 +32,9 @@ pip3 install selenium
 
 
 
-## Installing Chromedriver
+## Installing Chromedriver 
+
+#### General Linux Operating System
 
 The `chromedriver` will need to be installed on the Linux system:
 
@@ -42,6 +44,18 @@ Select the version for the Chrome version installed on the system.  Then you wil
 
 ```bash
 sudo cp chromedriver /usr/bin/.
+```
+
+
+
+#### Installing Chromedriver for Raspberrypi
+
+Unfortunately, Google doesn't make `AMR32` (`armv7l`) builds of ChroreDriver anymore. The latest version of `chromedriver-linux32` was released for version [2.33](https://chromedriver.storage.googleapis.com/index.html?path=2.33/)
+
+But there is a solution, people from [the Raspbian project](https://www.raspbian.org/) have compiled chromium-chromedriver version for the `armhf` platform and added it to the repo.
+
+```bash
+sudo apt-get install chromium-chromedriver
 ```
 
 
