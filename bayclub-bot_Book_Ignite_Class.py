@@ -36,6 +36,8 @@
 #      07FEB2023     Original Creation
 #      08FEB2023     Added weekday check for M/W/F scheduling
 #      10FEB2023     Fixed day of week bug, and removed 800 time booking
+#      11MAR2023     Search for "IGNITE" class for the day of booking, and added logging
+#
 #
 ###########################################################################################
 
