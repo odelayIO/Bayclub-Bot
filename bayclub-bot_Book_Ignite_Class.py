@@ -53,9 +53,8 @@ import logging
 _USER_NAME      = 'your_user_name'
 _USER_PASS      = 'your_password'
 
-_DELAY          = 0.00
 _ENABLE_TIMER   = True
-_DELAY_SEC      = 10
+_DELAY_SEC      = 0
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
@@ -67,7 +66,7 @@ _CLASS_TIME     = _CLASS_TIME_HR*100+_CLASS_TIME_MIN
 # -----------------------------------------------------------
 #   Configure Logging
 # -----------------------------------------------------------
-logging.basicConfig(filename=_LOG_FILE_NAME, filemode='a',\
+logging.basicConfig(filename=_LOG_FILE_NAME, filemode='a',level=logging.INFO,\
                     format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
 # -----------------------------------------------------------
@@ -124,14 +123,13 @@ logging.info("Logged into Bayclub...")
 #   Select Day to book (always 3 days from today)
 # -----------------------------------------------------------
 class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
-
 class_day.click()
 logging.info("Selected day of class (3 days from today)...")
 
 # This will select a requested day
-#   day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Tu']")))
-#   day_button.click()
-#   logging.info('Clicking on Tuesday Button...')
+#    day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Tu']")))
+#    day_button.click()
+#    logging.info('Clicking on Tuesday Button...')
 
 
 
@@ -162,6 +160,4 @@ logging.info('Clicking on Confirm Button...')
 logging.info("Closing Chrome in 10 seconds...")
 time.sleep(10)
 browser.close()
-logging.info("Booked Ignite Class")
-
-
+logging.info("Booked Ignite Class\n\n\n")
