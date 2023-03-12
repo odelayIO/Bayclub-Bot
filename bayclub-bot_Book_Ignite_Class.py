@@ -84,7 +84,7 @@ if(_ENABLE_TIMER):
   s = (f-t).total_seconds()
   logging.info("  Seconds to Booking   : " + str(s))
   
-  logging.into("Sleeping for " + str(s) + "seconds...")
+  logging.info("Sleeping for " + str(s) + "seconds...")
   time.sleep(s)
 else:
   # Used for testing...
