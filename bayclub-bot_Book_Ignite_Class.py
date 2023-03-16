@@ -35,9 +35,8 @@
 #     -----------   -----------------------------------------------------------------------
 #      07FEB2023     Original Creation
 #      08FEB2023     Added weekday check for M/W/F scheduling
-#      10FEB2023     Fixed day of week bug, and removed 800 time booking
-#      11MAR2023     Search for "IGNITE" class for the day of booking, and added logging
-#
+#      10MAR2023     Fixed day of week bug, and removed 800 time booking
+#      15MAR2023     Search for text that contains 'IGNITE', so 'IGNITE ' works
 #
 ###########################################################################################
 
@@ -89,8 +88,7 @@ if(_ENABLE_TIMER):
 else:
   # Used for testing...
   _DEBUG_MODE = True
-  day_of_week = 4  # 6:Sunday, 1:Tuesday, 4:Friday
-  logging.info("Auto Booking Now...")
+  logging.info("\n\n ************ Debug Mode ********************\n\n")
 
 
 # -----------------------------------------------------------
@@ -124,14 +122,15 @@ logging.info("Logged into Bayclub...")
 # -----------------------------------------------------------
 #   Select Day to book (always 3 days from today)
 # -----------------------------------------------------------
-class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
-class_day.click()
-logging.info("Selected day of class (3 days from today)...")
-
-# This will select a requested day
-#    day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Tu']")))
-#    day_button.click()
-#    logging.info('Clicking on Tuesday Button...')
+if(_DEBUG_MODE == False):
+  class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
+  class_day.click()
+  logging.info("Selected day of class (3 days from today)...")
+else:
+  # This will select a requested day
+  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Fr']")))
+  day_button.click()
+  logging.info('Clicking on Friday Button...')
 
 
 
@@ -140,19 +139,20 @@ logging.info("Selected day of class (3 days from today)...")
 # -----------------------------------------------------------
 
 # This command will select the first Ignite class offered on that day
-ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='IGNITE']")))
+ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(),'IGNITE')]")))
 ignite_button.click()
 logging.info('Clicking on Ignite Button...')
 
-# Click on the book button, should be in the same location for all classes
-book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
-book_button.click()
-logging.info('Clicking on Book Button...')
-
-# Click on the confirmation button, should be in the same location for all classes
-confirm_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
-confirm_button.click()
-logging.info('Clicking on Confirm Button...')
+if(_DEBUG_MODE == False):
+  # Click on the book button, should be in the same location for all classes
+  book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
+  book_button.click()
+  logging.info('Clicking on Book Button...')
+  
+  # Click on the confirmation button, should be in the same location for all classes
+  confirm_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
+  confirm_button.click()
+  logging.info('Clicking on Confirm Button...')
 
 
 
