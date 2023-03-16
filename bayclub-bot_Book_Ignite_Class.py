@@ -54,8 +54,7 @@ import logging
 _USER_NAME      = 'your_user_name'
 _USER_PASS      = 'your_password'
 
-_ENABLE_TIMER   = True
-_DELAY_SEC      = 0
+_DELAY_SEC      = 10
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
@@ -71,9 +70,19 @@ logging.basicConfig(filename=_LOG_FILE_NAME, filemode='a',level=logging.INFO,\
                     format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
 # -----------------------------------------------------------
+#   Open Chrome and go to website
+# -----------------------------------------------------------
+logging.info("Opening Chrome...")
+browser = webdriver.Chrome()
+browser.get(('https://bayclubconnect.com/classes'))
+wait = WebDriverWait(browser,10)
+logging.info("Chrome Opened.")
+
+
+# -----------------------------------------------------------
 #   Setting timer to sleep for exact seconds
 # -----------------------------------------------------------
-if(_ENABLE_TIMER):
+if(not _DEBUG_MODE):
   t = datetime.datetime.today()
   f = datetime.datetime(t.year,t.month,t.day,_CLASS_TIME_HR,_CLASS_TIME_MIN,_DELAY_SEC)  # 7am Class
   day_of_week = f.weekday()  # 6:Sunday, 1:Tuesday, 4:Friday
@@ -87,18 +96,7 @@ if(_ENABLE_TIMER):
   time.sleep(s)
 else:
   # Used for testing...
-  _DEBUG_MODE = True
-  logging.info("\n\n ************ Debug Mode ********************\n\n")
-
-
-# -----------------------------------------------------------
-#   Open Chrome and go to website
-# -----------------------------------------------------------
-browser = webdriver.Chrome()
-browser.get(('https://bayclubconnect.com/classes'))
-
-wait = WebDriverWait(browser,10)
-logging.info("Opening Chrome...")
+  logging.info("************ Debug Mode ********************")
 
 
 # -----------------------------------------------------------
@@ -122,13 +120,13 @@ logging.info("Logged into Bayclub...")
 # -----------------------------------------------------------
 #   Select Day to book (always 3 days from today)
 # -----------------------------------------------------------
-if(_DEBUG_MODE == False):
+if(not _DEBUG_MODE):
   class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
   class_day.click()
   logging.info("Selected day of class (3 days from today)...")
 else:
   # This will select a requested day
-  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Fr']")))
+  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Su']")))
   day_button.click()
   logging.info('Clicking on Friday Button...')
 
@@ -143,7 +141,7 @@ ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[cont
 ignite_button.click()
 logging.info('Clicking on Ignite Button...')
 
-if(_DEBUG_MODE == False):
+if(not _DEBUG_MODE):
   # Click on the book button, should be in the same location for all classes
   book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
   book_button.click()
