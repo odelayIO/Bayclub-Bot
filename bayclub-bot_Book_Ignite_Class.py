@@ -126,9 +126,9 @@ if(not _DEBUG_MODE):
   logging.info("Selected day of class (3 days from today)...")
 else:
   # This will select a requested day
+  logging.info('Clicking on Friday Button...')
   day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Su']")))
   day_button.click()
-  logging.info('Clicking on Friday Button...')
 
 
 
@@ -137,20 +137,20 @@ else:
 # -----------------------------------------------------------
 
 # This command will select the first Ignite class offered on that day
+logging.info('Clicking on Ignite Button...')
 ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(),'IGNITE')]")))
 ignite_button.click()
-logging.info('Clicking on Ignite Button...')
 
 if(not _DEBUG_MODE):
   # Click on the book button, should be in the same location for all classes
+  logging.info('Clicking on Book Button...')
   book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
   book_button.click()
-  logging.info('Clicking on Book Button...')
   
   # Click on the confirmation button, should be in the same location for all classes
+  logging.info('Clicking on Confirm Button...')
   confirm_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
   confirm_button.click()
-  logging.info('Clicking on Confirm Button...')
 
 
 
