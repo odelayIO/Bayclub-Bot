@@ -54,11 +54,14 @@ import logging
 _USER_NAME      = 'your_user_name'
 _USER_PASS      = 'your_password'
 
-_DELAY_SEC      = 10
+_DELAY_SEC      = 0
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
 _DEBUG_MODE     = False
+_SCREEN_CAP_EN  = True
+_SCREEN_CAP_DLY = 1 # seconds to delay before taking screen capture
+_BASE_DIR       = '/home/sdr/workspace/bayclub-bot/'
 _LOG_FILE_NAME  = '/home/sdr/workspace/bayclub-bot/baybot.log'
 
 _CLASS_TIME     = _CLASS_TIME_HR*100+_CLASS_TIME_MIN
@@ -75,7 +78,7 @@ logging.basicConfig(filename=_LOG_FILE_NAME, filemode='a',level=logging.INFO,\
 logging.info("Opening Chrome...")
 browser = webdriver.Chrome()
 browser.get(('https://bayclubconnect.com/classes'))
-wait = WebDriverWait(browser,10)
+wait = WebDriverWait(browser,15)
 logging.info("Chrome Opened.")
 
 
@@ -112,52 +115,76 @@ password = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[@id='pass
 password.send_keys(_USER_PASS)
 
 # Click Login button
+logging.info("Logging into Bayclub...")
 login_button = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-login/div/app-login-connect/div[1]/div/div/div/form/button")))
 login_button.click()
-logging.info("Logged into Bayclub...")
+logging.info("Login to Bayclub Done.")
+
+if(_SCREEN_CAP_EN):
+  time.sleep(_SCREEN_CAP_DLY)
+  browser.save_screenshot(str(_BASE_DIR +'1_after_login.png'));
 
 
 # -----------------------------------------------------------
 #   Select Day to book (always 3 days from today)
 # -----------------------------------------------------------
 if(not _DEBUG_MODE):
+  logging.info("Selecting day of class (3 days from today)...")
   class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
   class_day.click()
-  logging.info("Selected day of class (3 days from today)...")
+  logging.info("Selected done.")
 else:
   # This will select a requested day
-  logging.info('Clicking on Friday Button...')
-  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Su']")))
+  logging.info('Clicking on Day Button...')
+  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Fr']")))
   day_button.click()
+  #         logging.info("Selected day of class (3 days from today)...")
+  #         class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
+  #         class_day.click()
 
+
+if(_SCREEN_CAP_EN):
+  time.sleep(_SCREEN_CAP_DLY)
+  browser.save_screenshot(str(_BASE_DIR + '2_after_clicking_on_day_button.png'));
 
 
 # -----------------------------------------------------------
 #   Book Ignite and confirm
 # -----------------------------------------------------------
-
 # This command will select the first Ignite class offered on that day
 logging.info('Clicking on Ignite Button...')
 ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(),'IGNITE')]")))
 ignite_button.click()
+
+if(_SCREEN_CAP_EN):
+  time.sleep(_SCREEN_CAP_DLY)
+  browser.save_screenshot(str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'));
 
 if(not _DEBUG_MODE):
   # Click on the book button, should be in the same location for all classes
   logging.info('Clicking on Book Button...')
   book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
   book_button.click()
+
+  if(_SCREEN_CAP_EN):
+    time.sleep(_SCREEN_CAP_DLY)
+    browser.save_screenshot(str(_BASE_DIR + '4_after_clicking_on_book_button.png'));
   
   # Click on the confirmation button, should be in the same location for all classes
   logging.info('Clicking on Confirm Button...')
   confirm_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
   confirm_button.click()
 
-
+  if(_SCREEN_CAP_EN):
+    time.sleep(_SCREEN_CAP_DLY)
+    browser.save_screenshot(str(_BASE_DIR + '5_after_clicking_on_confirm_button.png'));
 
 # -----------------------------------------------------------
 #   Close Chrome
 # -----------------------------------------------------------
 logging.info("Closing Chrome in 10 seconds...")
-time.sleep(10)
+if(_SCREEN_CAP_EN):
+  time.sleep(_SCREEN_CAP_DLY)
+  browser.save_screenshot(str(_BASE_DIR + '6_just_before_exiting_bot.png'));
 browser.close()
 logging.info("Booked Ignite Class\n\n\n")
