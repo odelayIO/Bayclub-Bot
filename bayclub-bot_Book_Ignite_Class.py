@@ -37,6 +37,7 @@
 #      08FEB2023     Added weekday check for M/W/F scheduling
 #      10MAR2023     Fixed day of week bug, and removed 800 time booking
 #      15MAR2023     Search for text that contains 'IGNITE', so 'IGNITE ' works
+#      21APR2023     Created Ignite Class  
 #
 ###########################################################################################
 
@@ -47,22 +48,24 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import datetime
 import logging
+import ignite
 
 # -----------------------------------------------------------
 #   Parameters
 # -----------------------------------------------------------
-_USER_NAME      = 'your_user_name'
-_USER_PASS      = 'your_password'
+_USER_NAME      = 'USER_NAME'
+_USER_PASS      = 'USER_PASSWORD'
 
 _DELAY_SEC      = 0
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
-_DEBUG_MODE     = False
-_SCREEN_CAP_EN  = True
+_DEBUG_MODE     = True
+_SCREEN_CAP_EN  = False
 _SCREEN_CAP_DLY = 1 # seconds to delay before taking screen capture
 _BASE_DIR       = '/home/sdr/workspace/bayclub-bot/'
 _LOG_FILE_NAME  = '/home/sdr/workspace/bayclub-bot/baybot.log'
+_URL            = 'https://bayclubconnect.com/classes'
 
 _CLASS_TIME     = _CLASS_TIME_HR*100+_CLASS_TIME_MIN
 
@@ -76,19 +79,17 @@ logging.basicConfig(filename=_LOG_FILE_NAME, filemode='a',level=logging.INFO,\
 #   Open Chrome and go to website
 # -----------------------------------------------------------
 logging.info("Opening Chrome...")
-browser = webdriver.Chrome()
-browser.get(('https://bayclubconnect.com/classes'))
-wait = WebDriverWait(browser,15)
+chrome = ignite.ignite(url=_URL)
 logging.info("Chrome Opened.")
 
 
 # -----------------------------------------------------------
 #   Setting timer to sleep for exact seconds
 # -----------------------------------------------------------
+t = datetime.datetime.today()
+f = datetime.datetime(t.year,t.month,t.day,_CLASS_TIME_HR,_CLASS_TIME_MIN,_DELAY_SEC)  # 7am Class
+day_of_week = f.weekday()  # 6:Sunday, 1:Tuesday, 4:Friday
 if(not _DEBUG_MODE):
-  t = datetime.datetime.today()
-  f = datetime.datetime(t.year,t.month,t.day,_CLASS_TIME_HR,_CLASS_TIME_MIN,_DELAY_SEC)  # 7am Class
-  day_of_week = f.weekday()  # 6:Sunday, 1:Tuesday, 4:Friday
   logging.info("Auto Booking with Delay...")
   logging.info("  Current Time         : " + str(t))
   logging.info("  Booking Time         : " + str(f))
@@ -105,86 +106,60 @@ else:
 # -----------------------------------------------------------
 #   Log into system
 # -----------------------------------------------------------
-# Enter User Name    
-username = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[@id='username']")))
-username.send_keys(_USER_NAME)
-
-
-# Enter User Password
-password = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[@id='password']")))
-password.send_keys(_USER_PASS)
-
-# Click Login button
 logging.info("Logging into Bayclub...")
-login_button = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-login/div/app-login-connect/div[1]/div/div/div/form/button")))
-login_button.click()
+chrome.login(user_name=_USER_NAME,user_password=_USER_PASS)
 logging.info("Login to Bayclub Done.")
 
-if(_SCREEN_CAP_EN):
-  time.sleep(_SCREEN_CAP_DLY)
-  browser.save_screenshot(str(_BASE_DIR +'1_after_login.png'));
+chrome.save_screenshot(fn=str(_BASE_DIR +'1_after_login.png'),\
+    en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
+
 
 
 # -----------------------------------------------------------
 #   Select Day to book (always 3 days from today)
 # -----------------------------------------------------------
+logging.info("Selecting day based on what is today...")
 if(not _DEBUG_MODE):
-  logging.info("Selecting day of class (3 days from today)...")
-  class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
-  class_day.click()
-  logging.info("Selected done.")
+  chrome.select_day(day_of_week,logging)
+  chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
+      en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 else:
-  # This will select a requested day
-  logging.info('Clicking on Day Button...')
-  day_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Fr']")))
-  day_button.click()
-  #         logging.info("Selected day of class (3 days from today)...")
-  #         class_day = wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/app-root/div/app-classes-shell/app-classes/div/div[1]/div/app-classes-filters/div/form/div[4]/div/app-date-slider/div/div[2]/gallery/gallery-core/div/gallery-slider/div/div/gallery-item[1]/div/div/div[4]/div[1]")))
-  #         class_day.click()
-
-
-if(_SCREEN_CAP_EN):
-  time.sleep(_SCREEN_CAP_DLY)
-  browser.save_screenshot(str(_BASE_DIR + '2_after_clicking_on_day_button.png'));
-
+  chrome.manually_select_day(day="'We'")
+  chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
+      en=True,dly=_SCREEN_CAP_DLY)
 
 # -----------------------------------------------------------
 #   Book Ignite and confirm
 # -----------------------------------------------------------
 # This command will select the first Ignite class offered on that day
 logging.info('Clicking on Ignite Button...')
-ignite_button = wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(text(),'IGNITE')]")))
-ignite_button.click()
+chrome.select_ignite()
+chrome.save_screenshot(fn=str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'),\
+    en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
-if(_SCREEN_CAP_EN):
-  time.sleep(_SCREEN_CAP_DLY)
-  browser.save_screenshot(str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'));
 
 if(not _DEBUG_MODE):
-  # Click on the book button, should be in the same location for all classes
+  # Click on the book button, if fails, then add to waitlist
   logging.info('Clicking on Book Button...')
-  book_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div[1]/div[1]/div[6]/button")))
-  book_button.click()
-
-  if(_SCREEN_CAP_EN):
-    time.sleep(_SCREEN_CAP_DLY)
-    browser.save_screenshot(str(_BASE_DIR + '4_after_clicking_on_book_button.png'));
+  try:
+    chrome.book_ignite() 
+  except:
+    chrome.add_to_waitlist_ignite() 
+  chrome.save_screenshot(fn=str(_BASE_DIR + '4_after_clicking_on_book_button.png'),\
+      en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
   
   # Click on the confirmation button, should be in the same location for all classes
   logging.info('Clicking on Confirm Button...')
-  confirm_button = wait.until(EC.visibility_of_element_located((By.XPATH,"/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
-  confirm_button.click()
-
-  if(_SCREEN_CAP_EN):
-    time.sleep(_SCREEN_CAP_DLY)
-    browser.save_screenshot(str(_BASE_DIR + '5_after_clicking_on_confirm_button.png'));
+  chrome.confirm_ignite() 
+  chrome.save_screenshot(fn=str(_BASE_DIR + '5_after_clicking_on_confirm_button.png'),\
+      en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
 # -----------------------------------------------------------
 #   Close Chrome
 # -----------------------------------------------------------
 logging.info("Closing Chrome in 10 seconds...")
-if(_SCREEN_CAP_EN):
-  time.sleep(_SCREEN_CAP_DLY)
-  browser.save_screenshot(str(_BASE_DIR + '6_just_before_exiting_bot.png'));
-browser.close()
+time.sleep(90)
+chrome.save_screenshot(fn=str(_BASE_DIR + '6_just_before_exiting_bot.png'),\
+    en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
+chrome.close()
 logging.info("Booked Ignite Class\n\n\n")
