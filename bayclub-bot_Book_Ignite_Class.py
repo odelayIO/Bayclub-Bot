@@ -60,8 +60,8 @@ _DELAY_SEC      = 0
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
-_DEBUG_MODE     = True
-_SCREEN_CAP_EN  = False
+_DEBUG_MODE     = False
+_SCREEN_CAP_EN  = True
 _SCREEN_CAP_DLY = 1 # seconds to delay before taking screen capture
 _BASE_DIR       = '/home/sdr/workspace/bayclub-bot/'
 _LOG_FILE_NAME  = '/home/sdr/workspace/bayclub-bot/baybot.log'
@@ -158,7 +158,7 @@ if(not _DEBUG_MODE):
 #   Close Chrome
 # -----------------------------------------------------------
 logging.info("Closing Chrome in 10 seconds...")
-time.sleep(90)
+time.sleep(10)
 chrome.save_screenshot(fn=str(_BASE_DIR + '6_just_before_exiting_bot.png'),\
     en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 chrome.close()
