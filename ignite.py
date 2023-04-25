@@ -92,10 +92,11 @@ class ignite(object):
 
     # 6: Today is Sunday, booking for Wednesday Ignite Class
     elif(day_of_week==6): 
-      logging_ignite("Today is Sunday, Booking Wednesday Ignite Class...")  
+      logging.info("Today is Sunday, Booking Wednesday Ignite Class...")  
       day_button = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='We']")))
     else:
-      logging_ignite("ERROR: CRON Executed on a day that is NOT expected...")
+      logging.info("ERROR: CRON Executed on a day that is NOT expected...")
+      day_button = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Sa']")))
 
     # Click on day to schedule
     day_button.click()
@@ -123,7 +124,6 @@ class ignite(object):
     confirm_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
         "/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
     confirm_button.click()
-
 
   def close(self):
     self.browser.close()

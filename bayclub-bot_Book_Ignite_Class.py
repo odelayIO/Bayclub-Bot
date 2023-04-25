@@ -97,7 +97,11 @@ if(not _DEBUG_MODE):
   logging.info("  Seconds to Booking   : " + str(s))
   
   logging.info("Sleeping for " + str(s) + "seconds...")
-  time.sleep(s)
+  if(s>0):
+    time.sleep(s)
+  else:
+    logging.info("ERROR: Time Delay was negative number...")
+
 else:
   # Used for testing...
   logging.info("************ Debug Mode ********************")
@@ -120,7 +124,7 @@ chrome.save_screenshot(fn=str(_BASE_DIR +'1_after_login.png'),\
 # -----------------------------------------------------------
 logging.info("Selecting day based on what is today...")
 if(not _DEBUG_MODE):
-  chrome.select_day(day_of_week,logging)
+  chrome.select_day(day_of_week=day_of_week,logging=logging)
   chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
       en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 else:
@@ -142,9 +146,12 @@ if(not _DEBUG_MODE):
   # Click on the book button, if fails, then add to waitlist
   logging.info('Clicking on Book Button...')
   try:
+    logging.info('Ignite class has spots open, and will book now...')
     chrome.book_ignite() 
   except:
+    logging.info('Ignite class is full, and will add to wait list...')
     chrome.add_to_waitlist_ignite() 
+
   chrome.save_screenshot(fn=str(_BASE_DIR + '4_after_clicking_on_book_button.png'),\
       en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
   
