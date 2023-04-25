@@ -97,7 +97,6 @@ class ignite(object):
     else:
       logging.info("ERROR: CRON Executed on a day that is NOT expected...")
       day_button = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[text()='Sa']")))
-
     # Click on day to schedule
     day_button.click()
 
@@ -110,13 +109,15 @@ class ignite(object):
 
   def book_ignite(self):
     book_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-        "//*[text()[contains(.,'Book')]]")))
+        "/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
+        #"//*[text()[contains(.,'Book')]]")))
     book_button.click()
 
 
   def add_to_waitlist_ignite(self):
     waitlist_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-        "//*[text()[contains(.,'waitlist')]]")))
+        "/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
+        #"//*[text()[contains(.,'waitlist')]]")))
     waitlist_button.click()
 
 

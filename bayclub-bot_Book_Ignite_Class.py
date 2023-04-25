@@ -146,11 +146,11 @@ if(not _DEBUG_MODE):
   # Click on the book button, if fails, then add to waitlist
   logging.info('Clicking on Book Button...')
   try:
-    logging.info('Ignite class has spots open, and will book now...')
     chrome.book_ignite() 
+    logging.info('Ignite class has spots open, and booked class...')
   except:
-    logging.info('Ignite class is full, and will add to wait list...')
     chrome.add_to_waitlist_ignite() 
+    logging.info('Ignite class is full, and added to waitlist...')
 
   chrome.save_screenshot(fn=str(_BASE_DIR + '4_after_clicking_on_book_button.png'),\
       en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
