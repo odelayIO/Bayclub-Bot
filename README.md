@@ -13,6 +13,7 @@ This is a list of assumptions:
 - The default location is El Segundo, and you profile has El Segundo as the default location when booking a class.
 - Only support Linux (e.g. Ubuntu) with `cron` for scheduling the time to book the Ignite class.
 - Only supports Chrome webbrowser driver.
+- The user is logged into the system, not through SSH, but logged into the system using keyboard,  mouse, and monitor.
 
 
 

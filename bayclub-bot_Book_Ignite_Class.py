@@ -62,7 +62,7 @@ _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
 _DEBUG_MODE     = False
 _SCREEN_CAP_EN  = True
-_SCREEN_CAP_DLY = 1 # seconds to delay before taking screen capture
+_SCREEN_CAP_DLY = 3 # seconds to delay before taking screen capture
 _BASE_DIR       = '/home/sdr/workspace/bayclub-bot/'
 _LOG_FILE_NAME  = '/home/sdr/workspace/bayclub-bot/baybot.log'
 _URL            = 'https://bayclubconnect.com/classes'
@@ -128,7 +128,7 @@ if(not _DEBUG_MODE):
   chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
       en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 else:
-  chrome.manually_select_day(day="'We'")
+  chrome.manually_select_day(day="'Mo'")
   chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
       en=True,dly=_SCREEN_CAP_DLY)
 
@@ -138,28 +138,27 @@ else:
 # This command will select the first Ignite class offered on that day
 logging.info('Clicking on Ignite Button...')
 chrome.select_ignite()
-chrome.save_screenshot(fn=str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'),\
-    en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
+chrome.save_screenshot(fn=str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
 
 if(not _DEBUG_MODE):
   # Click on the book button, if fails, then add to waitlist
   logging.info('Clicking on Book Button...')
   try:
+    chrome.save_screenshot(fn=str(_BASE_DIR + '4-1_Clicking_on_book_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
     chrome.book_ignite() 
     logging.info('Ignite class has spots open, and booked class...')
   except:
+    chrome.save_screenshot(fn=str(_BASE_DIR + '4-1_Clicking_on_Add_to_waitlist.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
     chrome.add_to_waitlist_ignite() 
     logging.info('Ignite class is full, and added to waitlist...')
 
-  chrome.save_screenshot(fn=str(_BASE_DIR + '4_after_clicking_on_book_button.png'),\
-      en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
+  chrome.save_screenshot(fn=str(_BASE_DIR + '4-2_after_clicking_on_book_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
   
   # Click on the confirmation button, should be in the same location for all classes
   logging.info('Clicking on Confirm Button...')
   chrome.confirm_ignite() 
-  chrome.save_screenshot(fn=str(_BASE_DIR + '5_after_clicking_on_confirm_button.png'),\
-      en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
+  chrome.save_screenshot(fn=str(_BASE_DIR + '5_after_clicking_on_confirm_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
 # -----------------------------------------------------------
 #   Close Chrome

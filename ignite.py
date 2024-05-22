@@ -109,21 +109,24 @@ class ignite(object):
 
   def book_ignite(self):
     book_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-        "/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
-        #"//*[text()[contains(.,'Book')]]")))
+        "//*[text()[contains(.,'Book class')]]"))) 
+        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[2]/div[1]/div/div[4]/button"))) # New link
+        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[1]/div[1]/div[6]/button")))  # Old link
     book_button.click()
 
 
   def add_to_waitlist_ignite(self):
     waitlist_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-        "/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
-        #"//*[text()[contains(.,'waitlist')]]")))
+        "//*[text()[contains(.,'Add to waitlist')]]")))
+        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[2]/div[1]/div/div[4]/button"
+        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
     waitlist_button.click()
 
 
   def confirm_ignite(self):
     confirm_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
         "/html/body/modal-container/div/div/app-universal-confirmation-modal/div[2]/div/div/div[4]/div/button[1]/span")))
+        #"//*[text()[contains(.,'CONFIRM BOOKING')]]")))
     confirm_button.click()
 
   def close(self):
