@@ -54,7 +54,7 @@ class ignite(object):
   '''Functions to book Ignite class at Bayclub'''
   
   def __init__(self, url="https://bayclubconnect.com/classes"):
-    self.browser = webdriver.Chrome()
+    self.browser = webdriver.Chrome('/usr/bin/chromedriver')
     self.browser.get(url)
     self.wait = WebDriverWait(self.browser,15)
 
@@ -101,9 +101,14 @@ class ignite(object):
     day_button.click()
 
 
-  def select_ignite(self):
-    ignite_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-        "//*[text()[contains(.,'IGNITE')]]")))
+  def select_ignite(self,day_of_week):
+    if(day_of_week==6): 
+      # This is a KLUDGE, need to update with time and name
+      ignite_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
+            "//*[text()[contains(.,'7:00')]]")))
+    else:
+      ignite_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
+            "//*[text()[contains(.,'IGNITE')]]")))
     ignite_button.click()
 
 

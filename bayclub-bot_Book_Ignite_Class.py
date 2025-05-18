@@ -49,14 +49,15 @@ import time
 import datetime
 import logging
 import ignite
+import secret
 
 # -----------------------------------------------------------
 #   Parameters
 # -----------------------------------------------------------
-_USER_NAME      = 'USER_NAME'
-_USER_PASS      = 'USER_PASSWORD'
+_USER_NAME      = secret._USER_NAME
+_USER_PASS      = secret._USER_PASS
 
-_DELAY_SEC      = 0
+_DELAY_SEC      = 10
 _CLASS_TIME_HR  = 7  # Hours in 24hr Time
 _CLASS_TIME_MIN = 0  # Minutes in 24hr Time
 
@@ -137,7 +138,7 @@ else:
 # -----------------------------------------------------------
 # This command will select the first Ignite class offered on that day
 logging.info('Clicking on Ignite Button...')
-chrome.select_ignite()
+chrome.select_ignite(day_of_week=day_of_week)
 chrome.save_screenshot(fn=str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
 
