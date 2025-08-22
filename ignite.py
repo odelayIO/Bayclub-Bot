@@ -101,30 +101,38 @@ class ignite(object):
     day_button.click()
 
 
-  def select_ignite(self,day_of_week):
-    if(day_of_week==6): 
-      # This is a KLUDGE, need to update with time and name
-      ignite_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-            "//*[text()[contains(.,'7:00')]]")))
-    else:
-      ignite_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
-            "//*[text()[contains(.,'IGNITE')]]")))
+  def select_ignite(self,day_of_week: int, time_of_week: str = "7:00", meridiem: str = "AM"):
+    #
+    # Selects the IGNITE class for the given day of the week and time.
+    # 
+    # Args:
+    #    day_of_week (int): Python weekday (0=Monday, 6=Sunday).
+    #    time_of_week (str): The time string to look for, e.g. "7:00" or "6:30".
+    #
+    ignite_xpath = f"""
+    //div[contains(@class,'col-2')
+     and contains(normalize-space(),'{time_of_week}')
+     and contains(normalize-space(),'{meridiem}')]
+    /parent::div
+    //div[@class='size-16 text-uppercase' 
+         and contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'ignite')]
+    """
+
+    ignite_button = self.wait.until(
+        EC.element_to_be_clickable((By.XPATH, ignite_xpath))
+    )
     ignite_button.click()
 
 
   def book_ignite(self):
     book_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
         "//*[text()[contains(.,'Book class')]]"))) 
-        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[2]/div[1]/div/div[4]/button"))) # New link
-        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-book-class-details/app-class-details/div/div[1]/div[1]/div[6]/button")))  # Old link
     book_button.click()
 
 
   def add_to_waitlist_ignite(self):
     waitlist_button = self.wait.until(EC.visibility_of_element_located((By.XPATH,\
         "//*[text()[contains(.,'Add to waitlist')]]")))
-        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[2]/div[1]/div/div[4]/button"
-        #"/html/body/app-root/div/app-classes-shell/app-classes-details/div/div/app-add-to-wait-list-details/app-class-details/div/div[1]/div[1]/div[6]/button")))
     waitlist_button.click()
 
 

@@ -138,7 +138,7 @@ else:
 # -----------------------------------------------------------
 # This command will select the first Ignite class offered on that day
 logging.info('Clicking on Ignite Button...')
-chrome.select_ignite(day_of_week=day_of_week)
+chrome.select_ignite(day_of_week=day_of_week, time_of_week="7:00",meridiem="AM")
 chrome.save_screenshot(fn=str(_BASE_DIR + '3_after_clicking_on_ignite_button.png'),en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 
 
