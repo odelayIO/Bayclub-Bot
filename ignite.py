@@ -45,6 +45,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+#   from selenium.webdriver.chrome.service import Service
+#   from selenium.webdriver.chrome.options import Options
+
 import time
 import datetime
 import logging
@@ -54,6 +57,11 @@ class ignite(object):
   '''Functions to book Ignite class at Bayclub'''
   
   def __init__(self, url="https://bayclubconnect.com/classes"):
+    # Headless mode maybe caused BayClub to lock my account
+    #chrome_options = Options()
+    #chrome_options.add_argument("--headless=new")  # So user doesn't have to be logged into machine
+    #service = Service("/usr/bin/chromedriver")  # path to your chromedriver
+    #self.browser = webdriver.Chrome(service=service, options=chrome_options)
     self.browser = webdriver.Chrome('/usr/bin/chromedriver')
     self.browser.get(url)
     self.wait = WebDriverWait(self.browser,15)

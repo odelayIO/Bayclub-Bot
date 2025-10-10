@@ -113,6 +113,7 @@ else:
 # -----------------------------------------------------------
 logging.info("Logging into Bayclub...")
 chrome.login(user_name=_USER_NAME,user_password=_USER_PASS)
+time.sleep(10)
 logging.info("Login to Bayclub Done.")
 
 chrome.save_screenshot(fn=str(_BASE_DIR +'1_after_login.png'),\
