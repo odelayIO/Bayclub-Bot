@@ -126,7 +126,7 @@ chrome.save_screenshot(fn=str(_BASE_DIR +'1_after_login.png'),\
 # -----------------------------------------------------------
 logging.info("Selecting day based on what is today...")
 if(not _DEBUG_MODE):
-  chrome.select_day(day_of_week=day_of_week,logging=logging)
+  chrome.select_day(day_of_week=day_of_week)
   chrome.save_screenshot(fn=str(_BASE_DIR + '2_after_clicking_on_day_button.png'),\
       en=_SCREEN_CAP_EN,dly=_SCREEN_CAP_DLY)
 else:
