@@ -39,6 +39,7 @@
 #      10MAR2023     Fixed day of week bug, and removed 800 time booking
 #      15MAR2023     Search for text that contains 'IGNITE', so 'IGNITE ' works
 #      21APR2023     Created Ignite Class  
+#      20OCT2025     Created Resilient Waiter Class
 #
 ###########################################################################################
 
