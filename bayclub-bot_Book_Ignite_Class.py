@@ -38,6 +38,7 @@
 #      10MAR2023     Fixed day of week bug, and removed 800 time booking
 #      15MAR2023     Search for text that contains 'IGNITE', so 'IGNITE ' works
 #      21APR2023     Created Ignite Class  
+#      28NOV2025     Added VPN check.  Bayclub blocks my home IP, so use VPN
 #
 ###########################################################################################
 
@@ -50,6 +51,20 @@ import datetime
 import logging
 import ignite
 import secret
+from vpn_manager import VPNManager  
+
+
+# -----------------------------------------------------------
+#   Check if VPN is enabled
+# -----------------------------------------------------------
+vpn = VPNManager("us-free-29.protonvpn.tcp")
+if vpn.ensure_enabled():
+  print("VPN is active.")
+else:
+  print("Failed to activate VPN.")
+
+
+
 
 # -----------------------------------------------------------
 #   Parameters
